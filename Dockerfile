@@ -51,6 +51,7 @@ RUN set -eux ; \
       snappy \
       sudo \
       zlib \
+      wget \
     && dnf clean all \
     && ln -sf /usr/bin/python3 /usr/bin/python
 RUN sudo python3 -m pip install --upgrade pip
@@ -114,6 +115,9 @@ RUN set -eux ; \
     echo "${sha256} *openjdk.tar.gz" | sha256sum -c - && \
     tar xzvf openjdk.tar.gz -C /usr/local && \
     rm -f openjdk.tar.gz
+
+RUN wget https://github.com/minio/warp/releases/latest/download/warp_Linux_arm64.rpm -O /tmp/warp_Linux_arm64.rpm && \
+    yum localinstall -y /tmp/warp_Linux_arm64.rpm
 
 ENV JAVA_HOME=/usr/local/jdk-21.0.2
 # compatibility with Ozone 1.4.0 and earlier compose env.
